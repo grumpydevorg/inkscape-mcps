@@ -1,0 +1,68 @@
+#!/usr/bin/env python3
+"""Development setup script for Inkscape MCP Server."""
+
+import subprocess
+import sys
+from pathlib import Path
+
+
+def run_cmd(cmd: str, desc: str) -> bool:
+    """Run a command and return success status."""
+    print(f"🔄 {desc}...")
+    try:
+        result = subprocess.run(cmd.split(), check=True, capture_output=True, text=True)
+        print(f"✅ {desc} completed")
+        return True
+    except subprocess.CalledProcessError as e:
+        print(f"❌ {desc} failed: {e}")
+        if e.stdout:
+            print(f"STDOUT: {e.stdout}")
+        if e.stderr:
+            print(f"STDERR: {e.stderr}")
+        return False
+
+
+def main():
+    """Main setup function."""
+    print("🚀 Setting up Inkscape MCP Server for development")
+    
+    # Check if we're in the right directory
+    if not Path("pyproject.toml").exists():
+        print("❌ Run this from the project root directory")
+        sys.exit(1)
+    
+    # Install dependencies
+    if not run_cmd("uv sync --dev", "Installing dependencies"):
+        sys.exit(1)
+    
+    # Run tests
+    if not run_cmd("uv run pytest", "Running tests"):
+        print("⚠️  Tests failed, but continuing...")
+    
+    # Build package
+    if not run_cmd("uv build", "Building package"):
+        sys.exit(1)
+    
+    # Check if entry points work
+    print("🔍 Checking entry points...")
+    try:
+        result = subprocess.run(["uv", "run", "which", "inkscape-mcp"], 
+                              capture_output=True, text=True, check=True)
+        print(f"✅ Entry point available at: {result.stdout.strip()}")
+    except subprocess.CalledProcessError:
+        print("❌ Entry points not working")
+        sys.exit(1)
+    
+    print("\n🎉 Setup complete!")
+    print("\nNext steps:")
+    print("1. Configure your MCP client (see examples/claude-desktop-config.json)")
+    print("2. Test the servers:")
+    print("   - uv run inkscape-mcp-cli")
+    print("   - uv run inkscape-mcp-dom") 
+    print("   - uv run inkscape-mcp")
+    print("3. Install Inkscape if not already available")
+    print("4. Set INKS_WORKSPACE environment variable if needed")
+
+
+if __name__ == "__main__":
+    main()

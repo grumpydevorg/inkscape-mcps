@@ -1,0 +1,1 @@
+scripts/run-inkscape-mcp.sh

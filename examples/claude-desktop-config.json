@@ -1,0 +1,25 @@
+{
+  "mcpServers": {
+    "inkscape-mcp": {
+      "command": "inkscape-mcp",
+      "env": {
+        "INKS_WORKSPACE": "/Users/youruser/Documents/inkscape-workspace",
+        "INKS_MAX_FILE": "52428800",
+        "INKS_TIMEOUT": "120",
+        "INKS_MAX_CONC": "4"
+      }
+    },
+    "inkscape-cli-only": {
+      "command": "inkscape-mcp-cli",
+      "env": {
+        "INKS_WORKSPACE": "/Users/youruser/Documents/inkscape-workspace"
+      }
+    },
+    "inkscape-dom-only": {
+      "command": "inkscape-mcp-dom",
+      "env": {
+        "INKS_WORKSPACE": "/Users/youruser/Documents/inkscape-workspace"
+      }
+    }
+  }
+}
