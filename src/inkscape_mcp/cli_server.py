@@ -130,8 +130,8 @@ def _resolve_inkscape_executable() -> str:
             return resolved
 
     raise ToolError(
-        "Inkscape executable not found. Install Inkscape and ensure it is on your PATH, "
-        "or set INKS_INKSCAPE_BIN to its full path."
+        "Inkscape executable not found. Install Inkscape and ensure it is "
+        "on your PATH, or set INKS_INKSCAPE_BIN to its full path."
     )
 
 

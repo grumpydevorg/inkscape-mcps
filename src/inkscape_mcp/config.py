@@ -10,9 +10,9 @@ class InkscapeConfig(BaseModel):
     """Configuration for Inkscape MCP servers."""
 
     workspace: Path = Field(
-        default_factory=lambda: Path(
-            os.getenv("INKS_WORKSPACE", "inkspace")
-        ).expanduser().resolve()
+        default_factory=lambda: Path(os.getenv("INKS_WORKSPACE", "inkspace"))
+        .expanduser()
+        .resolve()
     )
     max_file_size: int = Field(
         default_factory=lambda: int(os.getenv("INKS_MAX_FILE", str(50 * 1024 * 1024)))
