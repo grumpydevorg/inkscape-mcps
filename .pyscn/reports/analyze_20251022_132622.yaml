@@ -1,0 +1,1358 @@
+complexity:
+  functions:
+    - name: _action_run_impl
+      filepath: src/inkscape_mcp/cli_server.py
+      startline: 211
+      startcolumn: 0
+      endline: 333
+      metrics:
+        complexity: 24
+        nodes: 51
+        edges: 68
+        nestingdepth: 8
+        ifstatements: 12
+        loopstatements: 0
+        exceptionhandlers: 11
+        switchcases: 0
+      risklevel: high
+    - name: _dom_set_impl
+      filepath: src/inkscape_mcp/dom_server.py
+      startline: 188
+      startcolumn: 0
+      endline: 288
+      metrics:
+        complexity: 19
+        nodes: 34
+        edges: 50
+        nestingdepth: 7
+        ifstatements: 10
+        loopstatements: 3
+        exceptionhandlers: 8
+        switchcases: 0
+      risklevel: medium
+    - name: _dom_validate_impl
+      filepath: src/inkscape_mcp/dom_server.py
+      startline: 156
+      startcolumn: 0
+      endline: 179
+      metrics:
+        complexity: 17
+        nodes: 14
+        edges: 27
+        nestingdepth: 3
+        ifstatements: 2
+        loopstatements: 0
+        exceptionhandlers: 14
+        switchcases: 0
+      risklevel: medium
+    - name: flatten_pydantic_params
+      filepath: src/inkscape_mcp/auto_flatten.py
+      startline: 13
+      startcolumn: 0
+      endline: 255
+      metrics:
+        complexity: 13
+        nodes: 34
+        edges: 47
+        nestingdepth: 7
+        ifstatements: 12
+        loopstatements: 3
+        exceptionhandlers: 0
+        switchcases: 0
+      risklevel: medium
+    - name: _action_list_impl
+      filepath: src/inkscape_mcp/cli_server.py
+      startline: 181
+      startcolumn: 0
+      endline: 202
+      metrics:
+        complexity: 11
+        nodes: 20
+        edges: 28
+        nestingdepth: 4
+        ifstatements: 4
+        loopstatements: 1
+        exceptionhandlers: 6
+        switchcases: 0
+      risklevel: medium
+    - name: _load_svg_text
+      filepath: src/inkscape_mcp/dom_server.py
+      startline: 129
+      startcolumn: 0
+      endline: 144
+      metrics:
+        complexity: 10
+        nodes: 11
+        edges: 17
+        nestingdepth: 2
+        ifstatements: 5
+        loopstatements: 0
+        exceptionhandlers: 4
+        switchcases: 0
+      risklevel: medium
+    - name: _write_inline
+      filepath: src/inkscape_mcp/cli_server.py
+      startline: 145
+      startcolumn: 0
+      endline: 158
+      metrics:
+        complexity: 8
+        nodes: 11
+        edges: 16
+        nestingdepth: 1
+        ifstatements: 3
+        loopstatements: 0
+        exceptionhandlers: 4
+        switchcases: 0
+      risklevel: low
+    - name: _check_size
+      filepath: src/inkscape_mcp/cli_server.py
+      startline: 56
+      startcolumn: 0
+      endline: 65
+      metrics:
+        complexity: 7
+        nodes: 8
+        edges: 12
+        nestingdepth: 2
+        ifstatements: 2
+        loopstatements: 0
+        exceptionhandlers: 4
+        switchcases: 0
+      risklevel: low
+    - name: _read_bounded
+      filepath: src/inkscape_mcp/dom_server.py
+      startline: 72
+      startcolumn: 0
+      endline: 82
+      metrics:
+        complexity: 6
+        nodes: 9
+        edges: 13
+        nestingdepth: 1
+        ifstatements: 2
+        loopstatements: 0
+        exceptionhandlers: 3
+        switchcases: 0
+      risklevel: low
+    - name: Selector._safe_css
+      filepath: src/inkscape_mcp/dom_server.py
+      startline: 101
+      startcolumn: 4
+      endline: 111
+      metrics:
+        complexity: 6
+        nodes: 8
+        edges: 12
+        nestingdepth: 2
+        ifstatements: 3
+        loopstatements: 1
+        exceptionhandlers: 2
+        switchcases: 0
+      risklevel: low
+    - name: _ensure_in_workspace
+      filepath: src/inkscape_mcp/cli_server.py
+      startline: 38
+      startcolumn: 0
+      endline: 53
+      metrics:
+        complexity: 5
+        nodes: 5
+        edges: 8
+        nestingdepth: 1
+        ifstatements: 2
+        loopstatements: 0
+        exceptionhandlers: 2
+        switchcases: 0
+      risklevel: low
+    - name: _ensure_in_workspace
+      filepath: src/inkscape_mcp/dom_server.py
+      startline: 54
+      startcolumn: 0
+      endline: 69
+      metrics:
+        complexity: 5
+        nodes: 5
+        edges: 8
+        nestingdepth: 1
+        ifstatements: 2
+        loopstatements: 0
+        exceptionhandlers: 2
+        switchcases: 0
+      risklevel: low
+  summary:
+    totalfunctions: 12
+    averagecomplexity: 10.916666666666666
+    maxcomplexity: 24
+    mincomplexity: 5
+    filesanalyzed: 6
+    lowriskfunctions: 6
+    mediumriskfunctions: 5
+    highriskfunctions: 1
+    complexitydistribution:
+      2-5: 2
+      6-10: 5
+      11-20: 4
+      21+: 1
+  warnings: []
+  errors: []
+  generatedat: "2025-10-22T13:26:22+10:30"
+  version: 1.2.2
+  config:
+    exclude_patterns:
+      - test_*.py
+      - '*_test.py'
+    include_patterns:
+      - '**/*.py'
+    low_threshold: 9
+    max_complexity: 0
+    medium_threshold: 19
+    min_complexity: 5
+    output_format: json
+    recursive: false
+    show_details: false
+    sort_by: complexity
+dead_code:
+  files: []
+  summary:
+    totalfiles: 6
+    totalfunctions: 0
+    totalfindings: 0
+    fileswithdeadcode: 0
+    functionswithdeadcode: 0
+    criticalfindings: 0
+    warningfindings: 0
+    infofindings: 0
+    findingsbyreason: {}
+    totalblocks: 0
+    deadblocks: 0
+    overalldeadratio: 0
+  warnings: []
+  errors: []
+  generatedat: "2025-10-22T13:26:22+10:30"
+  version: 1.2.2
+  config:
+    context_lines: 0
+    detect_after_break: false
+    detect_after_continue: false
+    detect_after_raise: false
+    detect_after_return: false
+    detect_unreachable_branches: false
+    exclude_patterns:
+      - test_*.py
+      - '*_test.py'
+    ignore_patterns: []
+    include_patterns:
+      - '**/*.py'
+    min_severity: warning
+    show_context: false
+    sort_by: severity
+clone:
+  clones:
+    - id: 1
+      type: 0
+      location:
+        file_path: src/inkscape_mcp/auto_flatten.py
+        start_line: 13
+        end_line: 255
+        start_col: 0
+        end_col: 18
+      hash: ""
+      size: 79
+      line_count: 243
+      complexity: 0
+    - id: 2
+      type: 0
+      location:
+        file_path: src/inkscape_mcp/auto_flatten.py
+        start_line: 24
+        end_line: 167
+        start_col: 4
+        end_col: 50
+      hash: ""
+      size: 34
+      line_count: 144
+      complexity: 0
+    - id: 3
+      type: 0
+      location:
+        file_path: src/inkscape_mcp/auto_flatten.py
+        start_line: 29
+        end_line: 167
+        start_col: 8
+        end_col: 50
+      hash: ""
+      size: 31
+      line_count: 139
+      complexity: 0
+    - id: 4
+      type: 0
+      location:
+        file_path: src/inkscape_mcp/auto_flatten.py
+        start_line: 127
+        end_line: 160
+        start_col: 12
+        end_col: 58
+      hash: ""
+      size: 14
+      line_count: 34
+      complexity: 0
+    - id: 5
+      type: 0
+      location:
+        file_path: src/inkscape_mcp/auto_flatten.py
+        start_line: 176
+        end_line: 245
+        start_col: 4
+        end_col: 49
+      hash: ""
+      size: 34
+      line_count: 70
+      complexity: 0
+    - id: 6
+      type: 0
+      location:
+        file_path: src/inkscape_mcp/auto_flatten.py
+        start_line: 185
+        end_line: 239
+        start_col: 8
+        end_col: 70
+      hash: ""
+      size: 27
+      line_count: 55
+      complexity: 0
+    - id: 7
+      type: 0
+      location:
+        file_path: src/inkscape_mcp/auto_flatten.py
+        start_line: 196
+        end_line: 239
+        start_col: 12
+        end_col: 70
+      hash: ""
+      size: 19
+      line_count: 44
+      complexity: 0
+    - id: 8
+      type: 0
+      location:
+        file_path: src/inkscape_mcp/cli_server.py
+        start_line: 110
+        end_line: 115
+        start_col: 0
+        end_col: 26
+      hash: ""
+      size: 20
+      line_count: 6
+      complexity: 0
+    - id: 9
+      type: 0
+      location:
+        file_path: src/inkscape_mcp/cli_server.py
+        start_line: 118
+        end_line: 124
+        start_col: 0
+        end_col: 45
+      hash: ""
+      size: 35
+      line_count: 7
+      complexity: 0
+    - id: 10
+      type: 0
+      location:
+        file_path: src/inkscape_mcp/cli_server.py
+        start_line: 127
+        end_line: 142
+        start_col: 0
+        end_col: 16
+      hash: ""
+      size: 26
+      line_count: 16
+      complexity: 0
+    - id: 11
+      type: 0
+      location:
+        file_path: src/inkscape_mcp/cli_server.py
+        start_line: 145
+        end_line: 158
+        start_col: 0
+        end_col: 12
+      hash: ""
+      size: 13
+      line_count: 14
+      complexity: 0
+    - id: 12
+      type: 0
+      location:
+        file_path: src/inkscape_mcp/cli_server.py
+        start_line: 161
+        end_line: 178
+        start_col: 0
+        end_col: 86
+      hash: ""
+      size: 13
+      line_count: 18
+      complexity: 0
+    - id: 13
+      type: 0
+      location:
+        file_path: src/inkscape_mcp/cli_server.py
+        start_line: 181
+        end_line: 202
+        start_col: 0
+        end_col: 57
+      hash: ""
+      size: 20
+      line_count: 22
+      complexity: 0
+    - id: 14
+      type: 0
+      location:
+        file_path: src/inkscape_mcp/cli_server.py
+        start_line: 186
+        end_line: 202
+        start_col: 4
+        end_col: 57
+      hash: ""
+      size: 16
+      line_count: 17
+      complexity: 0
+    - id: 15
+      type: 0
+      location:
+        file_path: src/inkscape_mcp/cli_server.py
+        start_line: 187
+        end_line: 202
+        start_col: 8
+        end_col: 57
+      hash: ""
+      size: 14
+      line_count: 16
+      complexity: 0
+    - id: 16
+      type: 0
+      location:
+        file_path: src/inkscape_mcp/cli_server.py
+        start_line: 211
+        end_line: 333
+        start_col: 0
+        end_col: 24
+      hash: ""
+      size: 51
+      line_count: 123
+      complexity: 0
+    - id: 17
+      type: 0
+      location:
+        file_path: src/inkscape_mcp/cli_server.py
+        start_line: 231
+        end_line: 333
+        start_col: 4
+        end_col: 24
+      hash: ""
+      size: 45
+      line_count: 103
+      complexity: 0
+    - id: 18
+      type: 0
+      location:
+        file_path: src/inkscape_mcp/cli_server.py
+        start_line: 271
+        end_line: 333
+        start_col: 8
+        end_col: 24
+      hash: ""
+      size: 20
+      line_count: 63
+      complexity: 0
+    - id: 19
+      type: 0
+      location:
+        file_path: src/inkscape_mcp/cli_server.py
+        start_line: 272
+        end_line: 306
+        start_col: 12
+        end_col: 68
+      hash: ""
+      size: 10
+      line_count: 35
+      complexity: 0
+    - id: 20
+      type: 0
+      location:
+        file_path: src/inkscape_mcp/config.py
+        start_line: 9
+        end_line: 39
+        start_col: 0
+        end_col: 9
+      hash: ""
+      size: 20
+      line_count: 31
+      complexity: 0
+    - id: 21
+      type: 0
+      location:
+        file_path: src/inkscape_mcp/dom_server.py
+        start_line: 72
+        end_line: 82
+        start_col: 0
+        end_col: 23
+      hash: ""
+      size: 10
+      line_count: 11
+      complexity: 0
+    - id: 22
+      type: 0
+      location:
+        file_path: src/inkscape_mcp/dom_server.py
+        start_line: 85
+        end_line: 90
+        start_col: 0
+        end_col: 26
+      hash: ""
+      size: 20
+      line_count: 6
+      complexity: 0
+    - id: 23
+      type: 0
+      location:
+        file_path: src/inkscape_mcp/dom_server.py
+        start_line: 93
+        end_line: 111
+        start_col: 0
+        end_col: 16
+      hash: ""
+      size: 22
+      line_count: 19
+      complexity: 0
+    - id: 24
+      type: 0
+      location:
+        file_path: src/inkscape_mcp/dom_server.py
+        start_line: 121
+        end_line: 126
+        start_col: 0
+        end_col: 37
+      hash: ""
+      size: 17
+      line_count: 6
+      complexity: 0
+    - id: 25
+      type: 0
+      location:
+        file_path: src/inkscape_mcp/dom_server.py
+        start_line: 129
+        end_line: 144
+        start_col: 0
+        end_col: 22
+      hash: ""
+      size: 15
+      line_count: 16
+      complexity: 0
+    - id: 26
+      type: 0
+      location:
+        file_path: src/inkscape_mcp/dom_server.py
+        start_line: 134
+        end_line: 144
+        start_col: 4
+        end_col: 22
+      hash: ""
+      size: 11
+      line_count: 11
+      complexity: 0
+    - id: 27
+      type: 0
+      location:
+        file_path: src/inkscape_mcp/dom_server.py
+        start_line: 156
+        end_line: 179
+        start_col: 0
+        end_col: 54
+      hash: ""
+      size: 13
+      line_count: 24
+      complexity: 0
+    - id: 28
+      type: 0
+      location:
+        file_path: src/inkscape_mcp/dom_server.py
+        start_line: 188
+        end_line: 288
+        start_col: 0
+        end_col: 57
+      hash: ""
+      size: 41
+      line_count: 101
+      complexity: 0
+    - id: 29
+      type: 0
+      location:
+        file_path: src/inkscape_mcp/dom_server.py
+        start_line: 196
+        end_line: 288
+        start_col: 4
+        end_col: 57
+      hash: ""
+      size: 36
+      line_count: 93
+      complexity: 0
+    - id: 30
+      type: 0
+      location:
+        file_path: src/inkscape_mcp/dom_server.py
+        start_line: 197
+        end_line: 288
+        start_col: 8
+        end_col: 57
+      hash: ""
+      size: 34
+      line_count: 92
+      complexity: 0
+    - id: 31
+      type: 0
+      location:
+        file_path: src/inkscape_mcp/dom_server.py
+        start_line: 210
+        end_line: 275
+        start_col: 12
+        end_col: 32
+      hash: ""
+      size: 21
+      line_count: 66
+      complexity: 0
+    - id: 32
+      type: 0
+      location:
+        file_path: src/inkscape_mcp/dom_server.py
+        start_line: 297
+        end_line: 309
+        start_col: 0
+        end_col: 49
+      hash: ""
+      size: 11
+      line_count: 13
+      complexity: 0
+  clone_pairs:
+    - id: 1
+      clone1:
+        id: 0
+        type: 0
+        location:
+          file_path: src/inkscape_mcp/cli_server.py
+          start_line: 110
+          end_line: 115
+          start_col: 0
+          end_col: 26
+        hash: ""
+        size: 20
+        line_count: 6
+        complexity: 0
+      clone2:
+        id: 0
+        type: 0
+        location:
+          file_path: src/inkscape_mcp/dom_server.py
+          start_line: 85
+          end_line: 90
+          start_col: 0
+          end_col: 26
+        hash: ""
+        size: 20
+        line_count: 6
+        complexity: 0
+      similarity: 1
+      distance: 0
+      type: 1
+      confidence: 1
+  clone_groups: []
+  statistics:
+    total_clones: 32
+    total_clone_pairs: 1
+    total_clone_groups: 0
+    clones_by_type:
+      Type-1: 1
+    average_similarity: 1
+    lines_analyzed: 1098
+    files_analyzed: 6
+  request:
+    paths:
+      - src/inkscape_mcp/__init__.py
+      - src/inkscape_mcp/auto_flatten.py
+      - src/inkscape_mcp/cli_server.py
+      - src/inkscape_mcp/combined.py
+      - src/inkscape_mcp/config.py
+      - src/inkscape_mcp/dom_server.py
+    recursive: false
+    includepatterns:
+      - '**/*.py'
+    excludepatterns:
+      - test_*.py
+      - '*_test.py'
+    minlines: 5
+    minnodes: 10
+    similaritythreshold: 0.8
+    maxeditdistance: 0
+    ignoreliterals: false
+    ignoreidentifiers: false
+    type1threshold: 0.95
+    type2threshold: 0.85
+    type3threshold: 0.8
+    type4threshold: 0.75
+    outputformat: json
+    outputwriter: {}
+    outputpath: ""
+    noopen: false
+    showdetails: false
+    showcontent: false
+    sortby: ""
+    groupclones: true
+    groupmode: ""
+    groupthreshold: 0
+    kcorek: 0
+    minsimilarity: 0
+    maxsimilarity: 1
+    clonetypes:
+      - 1
+      - 2
+      - 3
+      - 4
+    configpath: ""
+    timeout: 0s
+    lshenabled: auto
+    lshautothreshold: 500
+    lshsimilaritythreshold: 0.5
+    lshbands: 32
+    lshrows: 4
+    lshhashes: 128
+  duration_ms: 318
+  success: true
+cbo:
+  classes:
+    - name: SetArgs
+      filepath: src/inkscape_mcp/dom_server.py
+      startline: 121
+      endline: 126
+      metrics:
+        couplingcount: 3
+        inheritancedependencies: 1
+        typehintdependencies: 2
+        instantiationdependencies: 0
+        attributeaccessdependencies: 0
+        importdependencies: 0
+        dependentclasses:
+          - BaseModel
+          - Doc
+          - SetOp
+      risklevel: low
+      isabstract: false
+      baseclasses:
+        - BaseModel
+    - name: RunArgs
+      filepath: src/inkscape_mcp/cli_server.py
+      startline: 127
+      endline: 142
+      metrics:
+        couplingcount: 2
+        inheritancedependencies: 1
+        typehintdependencies: 1
+        instantiationdependencies: 0
+        attributeaccessdependencies: 0
+        importdependencies: 0
+        dependentclasses:
+          - BaseModel
+          - Doc
+      risklevel: low
+      isabstract: false
+      baseclasses:
+        - BaseModel
+    - name: InkscapeConfig
+      filepath: src/inkscape_mcp/config.py
+      startline: 9
+      endline: 39
+      metrics:
+        couplingcount: 2
+        inheritancedependencies: 1
+        typehintdependencies: 1
+        instantiationdependencies: 0
+        attributeaccessdependencies: 0
+        importdependencies: 0
+        dependentclasses:
+          - BaseModel
+          - Path
+      risklevel: low
+      isabstract: false
+      baseclasses:
+        - BaseModel
+    - name: SetOp
+      filepath: src/inkscape_mcp/dom_server.py
+      startline: 114
+      endline: 118
+      metrics:
+        couplingcount: 2
+        inheritancedependencies: 1
+        typehintdependencies: 1
+        instantiationdependencies: 0
+        attributeaccessdependencies: 0
+        importdependencies: 0
+        dependentclasses:
+          - BaseModel
+          - Selector
+      risklevel: low
+      isabstract: false
+      baseclasses:
+        - BaseModel
+    - name: Doc
+      filepath: src/inkscape_mcp/cli_server.py
+      startline: 110
+      endline: 115
+      metrics:
+        couplingcount: 1
+        inheritancedependencies: 1
+        typehintdependencies: 0
+        instantiationdependencies: 0
+        attributeaccessdependencies: 0
+        importdependencies: 0
+        dependentclasses:
+          - BaseModel
+      risklevel: low
+      isabstract: false
+      baseclasses:
+        - BaseModel
+    - name: Export
+      filepath: src/inkscape_mcp/cli_server.py
+      startline: 118
+      endline: 124
+      metrics:
+        couplingcount: 1
+        inheritancedependencies: 1
+        typehintdependencies: 0
+        instantiationdependencies: 0
+        attributeaccessdependencies: 0
+        importdependencies: 0
+        dependentclasses:
+          - BaseModel
+      risklevel: low
+      isabstract: false
+      baseclasses:
+        - BaseModel
+    - name: Selector
+      filepath: src/inkscape_mcp/dom_server.py
+      startline: 93
+      endline: 111
+      metrics:
+        couplingcount: 1
+        inheritancedependencies: 1
+        typehintdependencies: 0
+        instantiationdependencies: 0
+        attributeaccessdependencies: 0
+        importdependencies: 0
+        dependentclasses:
+          - BaseModel
+      risklevel: low
+      isabstract: false
+      baseclasses:
+        - BaseModel
+    - name: Doc
+      filepath: src/inkscape_mcp/dom_server.py
+      startline: 85
+      endline: 90
+      metrics:
+        couplingcount: 1
+        inheritancedependencies: 1
+        typehintdependencies: 0
+        instantiationdependencies: 0
+        attributeaccessdependencies: 0
+        importdependencies: 0
+        dependentclasses:
+          - BaseModel
+      risklevel: low
+      isabstract: false
+      baseclasses:
+        - BaseModel
+  summary:
+    totalclasses: 8
+    averagecbo: 1.625
+    maxcbo: 3
+    mincbo: 1
+    classesanalyzed: 8
+    filesanalyzed: 6
+    lowriskclasses: 8
+    mediumriskclasses: 0
+    highriskclasses: 0
+    cbodistribution:
+      1-5: 8
+    mostcoupledclasses:
+      - name: SetArgs
+        filepath: src/inkscape_mcp/dom_server.py
+        startline: 121
+        endline: 126
+        metrics:
+          couplingcount: 3
+          inheritancedependencies: 1
+          typehintdependencies: 2
+          instantiationdependencies: 0
+          attributeaccessdependencies: 0
+          importdependencies: 0
+          dependentclasses:
+            - BaseModel
+            - Doc
+            - SetOp
+        risklevel: low
+        isabstract: false
+        baseclasses:
+          - BaseModel
+      - name: RunArgs
+        filepath: src/inkscape_mcp/cli_server.py
+        startline: 127
+        endline: 142
+        metrics:
+          couplingcount: 2
+          inheritancedependencies: 1
+          typehintdependencies: 1
+          instantiationdependencies: 0
+          attributeaccessdependencies: 0
+          importdependencies: 0
+          dependentclasses:
+            - BaseModel
+            - Doc
+        risklevel: low
+        isabstract: false
+        baseclasses:
+          - BaseModel
+      - name: InkscapeConfig
+        filepath: src/inkscape_mcp/config.py
+        startline: 9
+        endline: 39
+        metrics:
+          couplingcount: 2
+          inheritancedependencies: 1
+          typehintdependencies: 1
+          instantiationdependencies: 0
+          attributeaccessdependencies: 0
+          importdependencies: 0
+          dependentclasses:
+            - BaseModel
+            - Path
+        risklevel: low
+        isabstract: false
+        baseclasses:
+          - BaseModel
+      - name: SetOp
+        filepath: src/inkscape_mcp/dom_server.py
+        startline: 114
+        endline: 118
+        metrics:
+          couplingcount: 2
+          inheritancedependencies: 1
+          typehintdependencies: 1
+          instantiationdependencies: 0
+          attributeaccessdependencies: 0
+          importdependencies: 0
+          dependentclasses:
+            - BaseModel
+            - Selector
+        risklevel: low
+        isabstract: false
+        baseclasses:
+          - BaseModel
+      - name: Doc
+        filepath: src/inkscape_mcp/cli_server.py
+        startline: 110
+        endline: 115
+        metrics:
+          couplingcount: 1
+          inheritancedependencies: 1
+          typehintdependencies: 0
+          instantiationdependencies: 0
+          attributeaccessdependencies: 0
+          importdependencies: 0
+          dependentclasses:
+            - BaseModel
+        risklevel: low
+        isabstract: false
+        baseclasses:
+          - BaseModel
+      - name: Export
+        filepath: src/inkscape_mcp/cli_server.py
+        startline: 118
+        endline: 124
+        metrics:
+          couplingcount: 1
+          inheritancedependencies: 1
+          typehintdependencies: 0
+          instantiationdependencies: 0
+          attributeaccessdependencies: 0
+          importdependencies: 0
+          dependentclasses:
+            - BaseModel
+        risklevel: low
+        isabstract: false
+        baseclasses:
+          - BaseModel
+      - name: Selector
+        filepath: src/inkscape_mcp/dom_server.py
+        startline: 93
+        endline: 111
+        metrics:
+          couplingcount: 1
+          inheritancedependencies: 1
+          typehintdependencies: 0
+          instantiationdependencies: 0
+          attributeaccessdependencies: 0
+          importdependencies: 0
+          dependentclasses:
+            - BaseModel
+        risklevel: low
+        isabstract: false
+        baseclasses:
+          - BaseModel
+      - name: Doc
+        filepath: src/inkscape_mcp/dom_server.py
+        startline: 85
+        endline: 90
+        metrics:
+          couplingcount: 1
+          inheritancedependencies: 1
+          typehintdependencies: 0
+          instantiationdependencies: 0
+          attributeaccessdependencies: 0
+          importdependencies: 0
+          dependentclasses:
+            - BaseModel
+        risklevel: low
+        isabstract: false
+        baseclasses:
+          - BaseModel
+    mostdependeduponclasses: []
+  warnings:
+    - '[src/inkscape_mcp/__init__.py] No classes found in file'
+    - '[src/inkscape_mcp/auto_flatten.py] No classes found in file'
+    - '[src/inkscape_mcp/combined.py] No classes found in file'
+  errors: []
+  generatedat: "2025-10-22T13:26:22+10:30"
+  version: 1.2.2
+  config:
+    includeBuiltins: false
+    includeImports: false
+    lowThreshold: 5
+    maxCBO: 0
+    mediumThreshold: 10
+    minCBO: 0
+    outputFormat: json
+    showZeros: false
+    sortBy: coupling
+system:
+  dependencyanalysis:
+    totalmodules: 6
+    totaldependencies: 4
+    rootmodules:
+      - src.inkscape_mcp
+      - src.inkscape_mcp.auto_flatten
+      - src.inkscape_mcp.config
+    leafmodules:
+      - src.inkscape_mcp
+      - src.inkscape_mcp.cli_server
+      - src.inkscape_mcp.combined
+      - src.inkscape_mcp.dom_server
+    modulemetrics:
+      src.inkscape_mcp:
+        modulename: src.inkscape_mcp
+        package: src
+        filepath: /Users/rick/git_checkout/inkscape-mcps/src/inkscape_mcp/__init__.py
+        ispackage: true
+        linesofcode: 10
+        functioncount: 0
+        classcount: 0
+        publicinterface: []
+        afferentcoupling: 0
+        efferentcoupling: 0
+        instability: 0
+        abstractness: 0
+        distance: 1
+        maintainability: 0
+        technicaldebt: 0
+        risklevel: high
+        directdependencies: []
+        transitivedependencies: []
+        dependents: []
+      src.inkscape_mcp.auto_flatten:
+        modulename: src.inkscape_mcp.auto_flatten
+        package: src
+        filepath: /Users/rick/git_checkout/inkscape-mcps/src/inkscape_mcp/auto_flatten.py
+        ispackage: false
+        linesofcode: 256
+        functioncount: 2
+        classcount: 0
+        publicinterface:
+          - flatten_pydantic_params
+          - wrapper
+        afferentcoupling: 1
+        efferentcoupling: 0
+        instability: 0
+        abstractness: 0
+        distance: 1
+        maintainability: 0
+        technicaldebt: 0
+        risklevel: high
+        directdependencies: []
+        transitivedependencies: []
+        dependents:
+          - src.inkscape_mcp.combined
+      src.inkscape_mcp.cli_server:
+        modulename: src.inkscape_mcp.cli_server
+        package: src
+        filepath: /Users/rick/git_checkout/inkscape-mcps/src/inkscape_mcp/cli_server.py
+        ispackage: false
+        linesofcode: 356
+        functioncount: 12
+        classcount: 3
+        publicinterface:
+          - Doc
+          - Export
+          - RunArgs
+          - validate_actions
+          - action_list
+          - action_run
+          - main
+        afferentcoupling: 0
+        efferentcoupling: 1
+        instability: 1
+        abstractness: 0
+        distance: 0
+        maintainability: 0
+        technicaldebt: 0
+        risklevel: low
+        directdependencies:
+          - src.inkscape_mcp.config
+        transitivedependencies:
+          - src.inkscape_mcp.config
+        dependents: []
+      src.inkscape_mcp.combined:
+        modulename: src.inkscape_mcp.combined
+        package: src
+        filepath: /Users/rick/git_checkout/inkscape-mcps/src/inkscape_mcp/combined.py
+        ispackage: false
+        linesofcode: 106
+        functioncount: 7
+        classcount: 0
+        publicinterface:
+          - action_list
+          - action_run
+          - dom_validate
+          - dom_set
+          - dom_clean
+          - main
+        afferentcoupling: 0
+        efferentcoupling: 2
+        instability: 1
+        abstractness: 0
+        distance: 0
+        maintainability: 0
+        technicaldebt: 0
+        risklevel: low
+        directdependencies:
+          - src.inkscape_mcp.auto_flatten
+          - src.inkscape_mcp.config
+        transitivedependencies:
+          - src.inkscape_mcp.auto_flatten
+          - src.inkscape_mcp.config
+        dependents: []
+      src.inkscape_mcp.config:
+        modulename: src.inkscape_mcp.config
+        package: src
+        filepath: /Users/rick/git_checkout/inkscape-mcps/src/inkscape_mcp/config.py
+        ispackage: false
+        linesofcode: 44
+        functioncount: 2
+        classcount: 1
+        publicinterface:
+          - InkscapeConfig
+          - from_env
+        afferentcoupling: 3
+        efferentcoupling: 0
+        instability: 0
+        abstractness: 0
+        distance: 1
+        maintainability: 0
+        technicaldebt: 0
+        risklevel: high
+        directdependencies: []
+        transitivedependencies: []
+        dependents:
+          - src.inkscape_mcp.cli_server
+          - src.inkscape_mcp.combined
+          - src.inkscape_mcp.dom_server
+      src.inkscape_mcp.dom_server:
+        modulename: src.inkscape_mcp.dom_server
+        package: src
+        filepath: /Users/rick/git_checkout/inkscape-mcps/src/inkscape_mcp/dom_server.py
+        ispackage: false
+        linesofcode: 326
+        functioncount: 13
+        classcount: 4
+        publicinterface:
+          - Doc
+          - Selector
+          - SetOp
+          - SetArgs
+          - dom_validate
+          - dom_set
+          - dom_clean
+          - main
+        afferentcoupling: 0
+        efferentcoupling: 1
+        instability: 1
+        abstractness: 0
+        distance: 0
+        maintainability: 0
+        technicaldebt: 0
+        risklevel: low
+        directdependencies:
+          - src.inkscape_mcp.config
+        transitivedependencies:
+          - src.inkscape_mcp.config
+        dependents: []
+    dependencymatrix:
+      src.inkscape_mcp: {}
+      src.inkscape_mcp.auto_flatten: {}
+      src.inkscape_mcp.cli_server:
+        src.inkscape_mcp.config: true
+      src.inkscape_mcp.combined:
+        src.inkscape_mcp.auto_flatten: true
+        src.inkscape_mcp.config: true
+      src.inkscape_mcp.config: {}
+      src.inkscape_mcp.dom_server:
+        src.inkscape_mcp.config: true
+    circulardependencies:
+      hascirculardependencies: false
+      totalcycles: 0
+      totalmodulesincycles: 0
+      circulardependencies: []
+      cyclebreakingsuggestions: []
+      coreinfrastructure: []
+    couplinganalysis:
+      averagecoupling: 1.3333333333333333
+      couplingdistribution: {}
+      highlycoupledmodules:
+        - src.inkscape_mcp
+        - src.inkscape_mcp.auto_flatten
+        - src.inkscape_mcp.config
+      looselycoupledmodules: []
+      averageinstability: 0.5
+      stablemodules: []
+      instablemodules: []
+      mainsequencedeviation: 0.5
+      zoneofpain:
+        - src.inkscape_mcp
+        - src.inkscape_mcp.auto_flatten
+        - src.inkscape_mcp.config
+      zoneofuselessness: []
+      mainsequence: []
+    longestchains:
+      - from: src.inkscape_mcp.cli_server
+        to: src.inkscape_mcp.config
+        path:
+          - src.inkscape_mcp.cli_server
+          - src.inkscape_mcp.config
+        length: 2
+      - from: src.inkscape_mcp.combined
+        to: src.inkscape_mcp.auto_flatten
+        path:
+          - src.inkscape_mcp.combined
+          - src.inkscape_mcp.auto_flatten
+        length: 2
+      - from: src.inkscape_mcp.combined
+        to: src.inkscape_mcp.config
+        path:
+          - src.inkscape_mcp.combined
+          - src.inkscape_mcp.config
+        length: 2
+      - from: src.inkscape_mcp.dom_server
+        to: src.inkscape_mcp.config
+        path:
+          - src.inkscape_mcp.dom_server
+          - src.inkscape_mcp.config
+        length: 2
+    maxdepth: 1
+  architectureanalysis:
+    compliancescore: 1
+    totalviolations: 0
+    totalrules: 0
+    layeranalysis:
+      layersanalyzed: 0
+      layerviolations: []
+      layercoupling: {}
+      layercohesion: {}
+      problematiclayers: []
+    cohesionanalysis: null
+    responsibilityanalysis: null
+    violations: []
+    severitybreakdown: {}
+    recommendations: []
+    refactoringtargets: []
+  summary:
+    totalmodules: 0
+    totalpackages: 0
+    totaldependencies: 0
+    projectroot: ""
+    overallqualityscore: 0
+    maintainabilityscore: 0
+    architecturescore: 0
+    modularityscore: 0
+    technicaldebthours: 0
+    averagecoupling: 0
+    averageinstability: 0
+    cyclicdependencies: 0
+    architectureviolations: 0
+    highriskmodules: 0
+    criticalissues: 0
+    refactoringcandidates: 0
+    architectureimprovements: 0
+  issues: []
+  recommendations: []
+  warnings: []
+  errors: []
+  generatedat: 2025-10-22T13:26:22.61459+10:30
+  duration: 22
+  version: 1.2.2
+  config: null
+summary:
+  total_files: 6
+  analyzed_files: 6
+  skipped_files: 0
+  complexity_enabled: true
+  dead_code_enabled: true
+  clone_enabled: true
+  cbo_enabled: true
+  deps_enabled: true
+  arch_enabled: true
+  deps_total_modules: 6
+  deps_modules_in_cycles: 0
+  deps_max_depth: 1
+  deps_main_sequence_deviation: 0.5
+  arch_compliance: 1
+  total_functions: 12
+  average_complexity: 10.916666666666666
+  high_complexity_count: 1
+  dead_code_count: 0
+  critical_dead_code: 0
+  total_clones: 32
+  clone_pairs: 1
+  clone_groups: 0
+  code_duplication_percentage: 1.092896174863388
+  cbo_classes: 8
+  high_coupling_classes: 0
+  medium_coupling_classes: 0
+  average_coupling: 1.625
+  health_score: 87
+  grade: A
+  complexity_score: 40
+  dead_code_score: 100
+  duplication_score: 100
+  coupling_score: 100
+  dependency_score: 92
+  architecture_score: 100
+generated_at: 2025-10-22T13:26:22.910981+10:30
+duration_ms: 321
+version: 1.2.2

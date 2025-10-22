@@ -77,16 +77,16 @@ class TestDOMServerMCPIntegration:
 
             # Should have DOM manipulation tools
             tool_names = [tool.name for tool in tools]
-            assert "dom.validate" in tool_names
-            assert "dom.set" in tool_names
-            assert "dom.clean" in tool_names
+            assert "dom_validate" in tool_names
+            assert "dom_set" in tool_names
+            assert "dom_clean" in tool_names
 
     @pytest.mark.asyncio
     async def test_dom_validate_tool_inline_svg(self, test_config, test_svg_content):
-        """Test: dom.validate tool works with inline SVG via MCP."""
+        """Test: dom_validate tool works with inline SVG via MCP."""
         async with Client(app) as client:
             result = await client.call_tool(
-                "dom.validate", {"doc": {"type": "inline", "svg": test_svg_content}}
+                "dom_validate", {"doc": {"type": "inline", "svg": test_svg_content}}
             )
 
             # Should successfully validate good SVG
@@ -95,7 +95,7 @@ class TestDOMServerMCPIntegration:
 
     @pytest.mark.asyncio
     async def test_dom_validate_tool_file_svg(self, test_config, test_svg_content):
-        """Test: dom.validate tool works with file SVG via MCP."""
+        """Test: dom_validate tool works with file SVG via MCP."""
         async with Client(app) as client:
             # Create test SVG file
             svg_file = test_config.workspace / "valid.svg"
@@ -103,7 +103,7 @@ class TestDOMServerMCPIntegration:
                 f.write(test_svg_content)
 
             result = await client.call_tool(
-                "dom.validate", {"doc": {"type": "file", "path": "valid.svg"}}
+                "dom_validate", {"doc": {"type": "file", "path": "valid.svg"}}
             )
 
             # Should successfully validate good SVG
@@ -112,14 +112,14 @@ class TestDOMServerMCPIntegration:
 
     @pytest.mark.asyncio
     async def test_dom_validate_malformed_svg(self, test_config):
-        """Test: dom.validate handles malformed SVG gracefully."""
+        """Test: dom_validate handles malformed SVG gracefully."""
         async with Client(app) as client:
             malformed_svg = "<svg><circle/><invalid></svg>"  # Missing closing tag
 
             # inkex handles malformed SVG gracefully with warnings, so this should
             # succeed
             result = await client.call_tool(
-                "dom.validate", {"doc": {"type": "inline", "svg": malformed_svg}}
+                "dom_validate", {"doc": {"type": "inline", "svg": malformed_svg}}
             )
             # Should succeed even with malformed SVG (inkex is forgiving)
             assert isinstance(result.data, dict)
@@ -127,7 +127,7 @@ class TestDOMServerMCPIntegration:
 
     @pytest.mark.asyncio
     async def test_dom_set_tool_color_changes(self, test_config, test_svg_content):
-        """Test: dom.set tool can change element colors via MCP."""
+        """Test: dom_set tool can change element colors via MCP."""
         async with Client(app) as client:
             # Create test SVG file
             svg_file = test_config.workspace / "colors.svg"
@@ -136,7 +136,7 @@ class TestDOMServerMCPIntegration:
 
             # Change all circles to orange
             result = await client.call_tool(
-                "dom.set",
+                "dom_set",
                 {
                     "doc": {"type": "file", "path": "colors.svg"},
                     "ops": [
@@ -163,7 +163,7 @@ class TestDOMServerMCPIntegration:
     async def test_dom_set_tool_batch_modifications(
         self, test_config, test_svg_content
     ):
-        """Test: dom.set tool can apply multiple modifications via MCP."""
+        """Test: dom_set tool can apply multiple modifications via MCP."""
         async with Client(app) as client:
             svg_file = test_config.workspace / "batch.svg"
             with open(svg_file, "w") as f:
@@ -171,7 +171,7 @@ class TestDOMServerMCPIntegration:
 
             # Apply multiple changes at once
             result = await client.call_tool(
-                "dom.set",
+                "dom_set",
                 {
                     "doc": {"type": "file", "path": "batch.svg"},
                     "ops": [
@@ -206,11 +206,11 @@ class TestDOMServerMCPIntegration:
 
     @pytest.mark.asyncio
     async def test_dom_set_tool_inline_svg(self, test_config, test_svg_content):
-        """Test: dom.set tool works with inline SVG via MCP."""
+        """Test: dom_set tool works with inline SVG via MCP."""
         async with Client(app) as client:
             # Modify inline SVG - make all circles purple
             result = await client.call_tool(
-                "dom.set",
+                "dom_set",
                 {
                     "doc": {"type": "inline", "svg": test_svg_content},
                     "ops": [
@@ -230,7 +230,7 @@ class TestDOMServerMCPIntegration:
 
     @pytest.mark.asyncio
     async def test_dom_clean_tool_file(self, test_config, messy_svg_content):
-        """Test: dom.clean tool works with files via MCP."""
+        """Test: dom_clean tool works with files via MCP."""
         async with Client(app) as client:
             # Create messy SVG file
             svg_file = test_config.workspace / "messy.svg"
@@ -238,7 +238,7 @@ class TestDOMServerMCPIntegration:
                 f.write(messy_svg_content)
 
             result = await client.call_tool(
-                "dom.clean",
+                "dom_clean",
                 {
                     "doc": {"type": "file", "path": "messy.svg"},
                     "save_as": "cleaned.svg",
@@ -274,10 +274,10 @@ class TestDOMServerMCPIntegration:
 
     @pytest.mark.asyncio
     async def test_dom_clean_tool_inline(self, test_config, messy_svg_content):
-        """Test: dom.clean tool works with inline SVG via MCP."""
+        """Test: dom_clean tool works with inline SVG via MCP."""
         async with Client(app) as client:
             result = await client.call_tool(
-                "dom.clean",
+                "dom_clean",
                 {
                     "doc": {"type": "inline", "svg": messy_svg_content},
                     "save_as": "cleaned_inline.svg",
@@ -316,7 +316,7 @@ class TestDOMServerSecurityViaMCP:
 
             for selector_value in safe_selectors:
                 result = await client.call_tool(
-                    "dom.set",
+                    "dom_set",
                     {
                         "doc": {"type": "file", "path": "safe.svg"},
                         "ops": [
@@ -352,7 +352,7 @@ class TestDOMServerSecurityViaMCP:
             for selector_value in unsafe_selectors:
                 with pytest.raises(Exception) as exc_info:
                     await client.call_tool(
-                        "dom.set",
+                        "dom_set",
                         {
                             "doc": {"type": "inline", "svg": "<svg><circle/></svg>"},
                             "ops": [
@@ -388,7 +388,7 @@ class TestDOMServerSecurityViaMCP:
             for dangerous_path in dangerous_paths:
                 with pytest.raises(Exception) as exc_info:
                     await client.call_tool(
-                        "dom.validate",
+                        "dom_validate",
                         {"doc": {"type": "file", "path": dangerous_path}},
                     )
                 # Should be blocked
@@ -406,7 +406,7 @@ class TestDOMServerSecurityViaMCP:
 
             with pytest.raises(Exception) as exc_info:
                 await client.call_tool(
-                    "dom.validate", {"doc": {"type": "inline", "svg": large_svg}}
+                    "dom_validate", {"doc": {"type": "inline", "svg": large_svg}}
                 )
 
             # Should be rejected due to size
@@ -420,7 +420,7 @@ class TestDOMServerSecurityViaMCP:
             # Test missing file path for file type
             with pytest.raises(Exception) as exc_info:
                 await client.call_tool(
-                    "dom.validate", {"doc": {"type": "file", "path": None}}
+                    "dom_validate", {"doc": {"type": "file", "path": None}}
                 )
             # Should be caught by validation
             assert exc_info.value is not None
@@ -428,7 +428,7 @@ class TestDOMServerSecurityViaMCP:
             # Test missing SVG for inline type
             with pytest.raises(Exception) as exc_info:
                 await client.call_tool(
-                    "dom.validate", {"doc": {"type": "inline", "svg": None}}
+                    "dom_validate", {"doc": {"type": "inline", "svg": None}}
                 )
             # Should be caught by validation
             assert exc_info.value is not None
@@ -443,13 +443,13 @@ class TestDOMServerWorkflowsViaMCP:
         async with Client(app) as client:
             # Step 1: Validate SVG
             validate_result = await client.call_tool(
-                "dom.validate", {"doc": {"type": "inline", "svg": test_svg_content}}
+                "dom_validate", {"doc": {"type": "inline", "svg": test_svg_content}}
             )
             assert validate_result.data.get("ok") is True
 
             # Step 2: Modify based on validation success
             modify_result = await client.call_tool(
-                "dom.set",
+                "dom_set",
                 {
                     "doc": {"type": "inline", "svg": test_svg_content},
                     "ops": [
@@ -471,7 +471,7 @@ class TestDOMServerWorkflowsViaMCP:
         async with Client(app) as client:
             # Step 1: Clean messy SVG
             clean_result = await client.call_tool(
-                "dom.clean",
+                "dom_clean",
                 {
                     "doc": {"type": "inline", "svg": messy_svg_content},
                     "save_as": "cleaned.svg",
@@ -481,7 +481,7 @@ class TestDOMServerWorkflowsViaMCP:
 
             # Step 2: Further modify the cleaned file
             modify_result = await client.call_tool(
-                "dom.set",
+                "dom_set",
                 {
                     "doc": {"type": "file", "path": "cleaned.svg"},
                     "ops": [
@@ -520,13 +520,13 @@ class TestDOMServerWorkflowsViaMCP:
             for i in range(3):
                 # Validate each file
                 validate_result = await client.call_tool(
-                    "dom.validate", {"doc": {"type": "file", "path": f"batch_{i}.svg"}}
+                    "dom_validate", {"doc": {"type": "file", "path": f"batch_{i}.svg"}}
                 )
                 assert validate_result.data.get("ok") is True
 
                 # Modify each file with different color
                 modify_result = await client.call_tool(
-                    "dom.set",
+                    "dom_set",
                     {
                         "doc": {"type": "file", "path": f"batch_{i}.svg"},
                         "ops": [

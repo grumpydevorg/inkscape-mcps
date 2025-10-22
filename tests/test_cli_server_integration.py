@@ -57,19 +57,19 @@ class TestCLIServerMCPIntegration:
         async with Client(app) as client:
             tools = await client.list_tools()
 
-            # Should have at least action.list and action.run tools
+            # Should have at least action_list and action_run tools
             tool_names = [tool.name for tool in tools]
-            assert "action.list" in tool_names
-            assert "action.run" in tool_names
+            assert "action_list" in tool_names
+            assert "action_run" in tool_names
 
     @pytest.mark.asyncio
     async def test_action_list_tool(self, test_config):
-        """Test: action.list tool works via MCP protocol."""
+        """Test: action_list tool works via MCP protocol."""
         async with Client(app) as client:
             # This will fail if Inkscape is not installed, but that's expected
             # We're testing the MCP protocol behavior, not Inkscape functionality
             try:
-                result = await client.call_tool("action.list", {})
+                result = await client.call_tool("action_list", {})
                 # If successful, should have actions key
                 assert isinstance(result.data, dict)
             except Exception as e:
@@ -80,7 +80,7 @@ class TestCLIServerMCPIntegration:
 
     @pytest.mark.asyncio
     async def test_action_run_validation(self, test_config, test_svg_content):
-        """Test: action.run tool validates arguments properly."""
+        """Test: action_run tool validates arguments properly."""
         async with Client(app) as client:
             # Create test SVG file
             svg_file = test_config.workspace / "test.svg"
@@ -90,7 +90,7 @@ class TestCLIServerMCPIntegration:
             # Test with valid file-based arguments
             try:
                 result = await client.call_tool(
-                    "action.run",
+                    "action_run",
                     {
                         "doc": {"type": "file", "path": "test.svg"},
                         "actions": ["select-all"],  # Safe action
@@ -107,12 +107,12 @@ class TestCLIServerMCPIntegration:
     async def test_action_run_inline_svg_validation(
         self, test_config, test_svg_content
     ):
-        """Test: action.run handles inline SVG properly."""
+        """Test: action_run handles inline SVG properly."""
         async with Client(app) as client:
             # Test with inline SVG
             try:
                 result = await client.call_tool(
-                    "action.run",
+                    "action_run",
                     {
                         "doc": {"type": "inline", "svg": test_svg_content},
                         "actions": ["select-all"],
@@ -131,7 +131,7 @@ class TestCLIServerMCPIntegration:
             # Test path traversal protection
             with pytest.raises(Exception) as exc_info:
                 await client.call_tool(
-                    "action.run",
+                    "action_run",
                     {
                         "doc": {"type": "file", "path": "../../../etc/passwd"},
                         "actions": ["select-all"],
@@ -149,7 +149,7 @@ class TestCLIServerMCPIntegration:
             # Test unsafe action rejection
             with pytest.raises(Exception) as exc_info:
                 await client.call_tool(
-                    "action.run",
+                    "action_run",
                     {
                         "doc": {"type": "inline", "svg": test_svg_content},
                         "actions": ["file-open"],  # Unsafe action
@@ -169,7 +169,7 @@ class TestCLIServerMCPIntegration:
 
             with pytest.raises(Exception) as exc_info:
                 await client.call_tool(
-                    "action.run",
+                    "action_run",
                     {
                         "doc": {"type": "inline", "svg": large_svg},
                         "actions": ["select-all"],
@@ -187,7 +187,7 @@ class TestCLIServerMCPIntegration:
             # Test missing file path for file type
             with pytest.raises(Exception) as exc_info:
                 await client.call_tool(
-                    "action.run",
+                    "action_run",
                     {"doc": {"type": "file", "path": None}, "actions": ["select-all"]},
                 )
             # Should be caught by validation
@@ -196,7 +196,7 @@ class TestCLIServerMCPIntegration:
             # Test missing SVG for inline type
             with pytest.raises(Exception) as exc_info:
                 await client.call_tool(
-                    "action.run",
+                    "action_run",
                     {"doc": {"type": "inline", "svg": None}, "actions": ["select-all"]},
                 )
             # Should be caught by validation
@@ -220,7 +220,7 @@ class TestCLIServerWorkflows:
             # Test export workflow via MCP
             try:
                 result = await client.call_tool(
-                    "action.run",
+                    "action_run",
                     {
                         "doc": {"type": "file", "path": "workflow.svg"},
                         "export": {"type": "png", "out": "output.png", "dpi": 300},
@@ -244,7 +244,7 @@ class TestCLIServerWorkflows:
             # Test batch operations via MCP
             try:
                 result = await client.call_tool(
-                    "action.run",
+                    "action_run",
                     {
                         "doc": {"type": "inline", "svg": test_svg_content},
                         "actions": [
@@ -268,7 +268,7 @@ class TestCLIServerWorkflows:
             # Test with custom timeout
             try:
                 result = await client.call_tool(
-                    "action.run",
+                    "action_run",
                     {
                         "doc": {"type": "inline", "svg": test_svg_content},
                         "actions": ["select-all"],

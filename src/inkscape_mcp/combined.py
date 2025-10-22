@@ -34,7 +34,7 @@ def _init_config(config: InkscapeConfig | None = None) -> None:
 
 
 # Re-export CLI tools
-@tool("action.list")
+@tool("action_list")
 async def action_list(ctx: Context) -> dict:
     """List available Inkscape actions."""
     if CFG is None:
@@ -43,7 +43,7 @@ async def action_list(ctx: Context) -> dict:
     return await cli_server._action_list_impl()
 
 
-@tool("action.run")
+@tool("action_run")
 @flatten_pydantic_params
 async def action_run(
     ctx: Context,
@@ -62,7 +62,7 @@ async def action_run(
 
 
 # Re-export DOM tools
-@tool("dom.validate")
+@tool("dom_validate")
 @flatten_pydantic_params
 async def dom_validate(ctx: Context, doc: dom_server.Doc) -> dict:
     """Validate SVG document structure."""
@@ -73,7 +73,7 @@ async def dom_validate(ctx: Context, doc: dom_server.Doc) -> dict:
     return await dom_server._dom_validate_impl(doc)
 
 
-@tool("dom.set")
+@tool("dom_set")
 @flatten_pydantic_params
 async def dom_set(
     ctx: Context, doc: dom_server.Doc, ops: list[dom_server.SetOp], save_as: str
@@ -85,7 +85,7 @@ async def dom_set(
     return await dom_server._dom_set_impl(doc, ops, save_as)
 
 
-@tool("dom.clean")
+@tool("dom_clean")
 @flatten_pydantic_params
 async def dom_clean(ctx: Context, doc: dom_server.Doc, save_as: str) -> dict:
     """Clean SVG using scour optimizer."""

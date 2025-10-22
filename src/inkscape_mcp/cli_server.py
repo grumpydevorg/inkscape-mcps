@@ -202,7 +202,7 @@ async def _action_list_impl() -> dict:
             raise ToolError("action-list timeout") from e
 
 
-@tool("action.list")
+@tool("action_list")
 async def action_list(ctx: Context) -> dict:
     """List available Inkscape actions."""
     return await _action_list_impl()
@@ -333,7 +333,7 @@ async def _action_run_impl(
                     pass
 
 
-@tool("action.run")
+@tool("action_run")
 async def action_run(
     ctx: Context,
     doc: Doc,

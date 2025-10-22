@@ -88,14 +88,14 @@ Add to your MCP client configuration (e.g., Claude Desktop):
 
 ### CLI Tools (`inkscape-mcp-cli`)
 
-- `action.list` - List all available Inkscape actions
-- `action.run` - Execute Inkscape actions on documents
+- `action_list` - List all available Inkscape actions
+- `action_run` - Execute Inkscape actions on documents
 
 ### DOM Tools (`inkscape-mcp-dom`)
 
-- `dom.validate` - Validate SVG document structure
-- `dom.set` - Set attributes/styles using CSS selectors
-- `dom.clean` - Clean/optimize SVG using scour
+- `dom_validate` - Validate SVG document structure
+- `dom_set` - Set attributes/styles using CSS selectors
+- `dom_clean` - Clean/optimize SVG using scour
 
 ## Examples
 
@@ -248,8 +248,8 @@ Add to your `claude_desktop_config.json`:
 Three MCP servers are available:
 
 - **`inkscape-mcp`** - Combined server (5 tools: all CLI + DOM)
-- **`inkscape-mcp-cli`** - CLI only (2 tools: action.list, action.run)  
-- **`inkscape-mcp-dom`** - DOM only (3 tools: dom.validate, dom.set, dom.clean)
+- **`inkscape-mcp-cli`** - CLI only (2 tools: action_list, action_run)  
+- **`inkscape-mcp-dom`** - DOM only (3 tools: dom_validate, dom_set, dom_clean)
 
 ### Troubleshooting
 

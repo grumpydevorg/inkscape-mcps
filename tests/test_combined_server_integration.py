@@ -62,13 +62,13 @@ class TestCombinedServerMCPIntegration:
             tool_names = [tool.name for tool in tools]
 
             # CLI tools
-            assert "action.list" in tool_names
-            assert "action.run" in tool_names
+            assert "action_list" in tool_names
+            assert "action_run" in tool_names
 
             # DOM tools
-            assert "dom.validate" in tool_names
-            assert "dom.set" in tool_names
-            assert "dom.clean" in tool_names
+            assert "dom_validate" in tool_names
+            assert "dom_set" in tool_names
+            assert "dom_clean" in tool_names
 
     @pytest.mark.asyncio
     async def test_cli_tools_work_in_combined_server(
@@ -84,7 +84,7 @@ class TestCombinedServerMCPIntegration:
             # Test CLI functionality
             try:
                 result = await client.call_tool(
-                    "action.run",
+                    "action_run",
                     {
                         "doc_type": "file",
                         "doc_path": "cli_test.svg",
@@ -106,7 +106,7 @@ class TestCombinedServerMCPIntegration:
         async with Client(app) as client:
             # Test DOM validation
             result = await client.call_tool(
-                "dom.validate", {"doc_type": "inline", "doc_svg": test_svg_content}
+                "dom_validate", {"doc_type": "inline", "doc_svg": test_svg_content}
             )
 
             # Should successfully validate
@@ -123,7 +123,7 @@ class TestCombinedServerMCPIntegration:
             # DOM tools should respect size limit
             with pytest.raises(Exception) as exc_info:
                 await client.call_tool(
-                    "dom.validate", {"doc_type": "inline", "doc_svg": large_svg}
+                    "dom_validate", {"doc_type": "inline", "doc_svg": large_svg}
                 )
             error_msg = str(exc_info.value).lower()
             assert any(word in error_msg for word in ["large", "size", "limit"])
@@ -131,7 +131,7 @@ class TestCombinedServerMCPIntegration:
             # CLI tools should also respect size limit
             with pytest.raises(Exception) as exc_info:
                 await client.call_tool(
-                    "action.run",
+                    "action_run",
                     {
                         "doc_type": "inline",
                         "doc_svg": large_svg,
@@ -150,7 +150,7 @@ class TestCombinedServerMCPIntegration:
             # Test CLI path traversal rejection
             with pytest.raises(Exception) as exc_info:
                 await client.call_tool(
-                    "action.run",
+                    "action_run",
                     {
                         "doc_type": "file",
                         "doc_path": "../outside.svg",
@@ -163,7 +163,7 @@ class TestCombinedServerMCPIntegration:
             # Test DOM path traversal rejection
             with pytest.raises(Exception) as exc_info:
                 await client.call_tool(
-                    "dom.set",
+                    "dom_set",
                     {
                         "doc_type": "file",
                         "doc_path": "../outside.svg",
@@ -194,13 +194,13 @@ class TestCombinedServerWorkflows:
 
             # Step 1: Validate the SVG structure using DOM tools
             validation_result = await client.call_tool(
-                "dom.validate", {"doc_type": "file", "doc_path": "workflow.svg"}
+                "dom_validate", {"doc_type": "file", "doc_path": "workflow.svg"}
             )
             assert validation_result.data.get("ok") is True
 
             # Step 2: Modify elements using DOM operations
             modify_result = await client.call_tool(
-                "dom.set",
+                "dom_set",
                 {
                     "doc_type": "file",
                     "doc_path": "workflow.svg",
@@ -220,7 +220,7 @@ class TestCombinedServerWorkflows:
             # Step 3: Export modified SVG to PNG using CLI operations
             try:
                 export_result = await client.call_tool(
-                    "action.run",
+                    "action_run",
                     {
                         "doc_type": "file",
                         "doc_path": "workflow_modified.svg",
@@ -259,13 +259,13 @@ class TestCombinedServerWorkflows:
 
             # Step 1: Validate inline SVG using DOM tools
             validation_result = await client.call_tool(
-                "dom.validate", {"doc_type": "inline", "doc_svg": messy_svg}
+                "dom_validate", {"doc_type": "inline", "doc_svg": messy_svg}
             )
             assert validation_result.data.get("ok") is True
 
             # Step 2: Clean the SVG (removes metadata, optimizes)
             clean_result = await client.call_tool(
-                "dom.clean",
+                "dom_clean",
                 {
                     "doc_type": "inline",
                     "doc_svg": messy_svg,
@@ -280,7 +280,7 @@ class TestCombinedServerWorkflows:
 
             # Step 4: Further modify the cleaned file using DOM tools
             modify_result = await client.call_tool(
-                "dom.set",
+                "dom_set",
                 {
                     "doc_type": "file",
                     "doc_path": "cleaned_output.svg",
@@ -316,14 +316,14 @@ class TestCombinedServerWorkflows:
             for i, svg_file in enumerate(svg_files):
                 # Step 1: Validate using DOM tools
                 validation_result = await client.call_tool(
-                    "dom.validate", {"doc_type": "file", "doc_path": svg_file}
+                    "dom_validate", {"doc_type": "file", "doc_path": svg_file}
                 )
                 assert validation_result.data.get("ok") is True
 
                 # Step 2: Modify using DOM tools (change color based on index)
                 colors = ["#ff0000", "#00ff00", "#0000ff"]
                 modify_result = await client.call_tool(
-                    "dom.set",
+                    "dom_set",
                     {
                         "doc_type": "file",
                         "doc_path": svg_file,
@@ -340,7 +340,7 @@ class TestCombinedServerWorkflows:
                 # Step 3: Export to PNG using CLI tools
                 try:
                     export_result = await client.call_tool(
-                        "action.run",
+                        "action_run",
                         {
                             "doc_type": "file",
                             "doc_path": f"batch_modified_{i}.svg",
@@ -361,7 +361,7 @@ class TestCombinedServerWorkflows:
             # Test CLI error handling - missing required fields
             with pytest.raises(Exception) as exc_info:
                 await client.call_tool(
-                    "action.run",
+                    "action_run",
                     {"doc_type": "file", "doc_path": None, "actions": ["select-all"]},
                 )
             assert exc_info.value is not None
@@ -369,7 +369,7 @@ class TestCombinedServerWorkflows:
             # Test DOM error handling - missing required fields
             with pytest.raises(Exception) as exc_info:
                 await client.call_tool(
-                    "dom.validate", {"doc_type": "inline", "doc_svg": None}
+                    "dom_validate", {"doc_type": "inline", "doc_svg": None}
                 )
             assert exc_info.value is not None
 
@@ -384,12 +384,12 @@ class TestCombinedServerWorkflows:
 
             # Step 1: Use DOM tools to validate and modify
             validate_result = await client.call_tool(
-                "dom.validate", {"doc_type": "file", "doc_path": "interop.svg"}
+                "dom_validate", {"doc_type": "file", "doc_path": "interop.svg"}
             )
             assert validate_result.data.get("ok") is True
 
             modify_result = await client.call_tool(
-                "dom.set",
+                "dom_set",
                 {
                     "doc_type": "file",
                     "doc_path": "interop.svg",
@@ -405,7 +405,7 @@ class TestCombinedServerWorkflows:
             # Step 2: Use CLI tools to process the DOM-modified file
             try:
                 cli_result = await client.call_tool(
-                    "action.run",
+                    "action_run",
                     {
                         "doc_type": "file",
                         "doc_path": "interop_modified.svg",
@@ -435,14 +435,14 @@ class TestCombinedServerWorkflows:
             # would require more sophisticated coordination
 
             dom_result = await client.call_tool(
-                "dom.validate", {"doc_type": "file", "doc_path": "concurrent_0.svg"}
+                "dom_validate", {"doc_type": "file", "doc_path": "concurrent_0.svg"}
             )
             assert dom_result.data.get("ok") is True
 
             # CLI tool should also work (sequentially in this test)
             try:
                 cli_result = await client.call_tool(
-                    "action.run",
+                    "action_run",
                     {
                         "doc_type": "file",
                         "doc_path": "concurrent_1.svg",

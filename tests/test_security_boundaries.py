@@ -50,7 +50,7 @@ class TestWorkspaceConfinementViaMCP:
             for dangerous_path in dangerous_paths:
                 with pytest.raises(Exception) as exc_info:
                     await client.call_tool(
-                        "action.run",
+                        "action_run",
                         {
                             "doc_type": "file",
                             "doc_path": dangerous_path,
@@ -80,7 +80,7 @@ class TestWorkspaceConfinementViaMCP:
             for dangerous_path in dangerous_paths:
                 with pytest.raises(Exception) as exc_info:
                     await client.call_tool(
-                        "dom.validate",
+                        "dom_validate",
                         {"doc_type": "file", "doc_path": dangerous_path},
                     )
                 error_msg = str(exc_info.value).lower()
@@ -110,7 +110,7 @@ class TestWorkspaceConfinementViaMCP:
 
                 # Should not raise an exception for DOM validation
                 result = await client.call_tool(
-                    "dom.validate", {"doc_type": "file", "doc_path": valid_path}
+                    "dom_validate", {"doc_type": "file", "doc_path": valid_path}
                 )
                 assert result.data.get("ok") is True
 
@@ -129,7 +129,7 @@ class TestFileSizeLimitsViaMCP:
 
             with pytest.raises(Exception) as exc_info:
                 await client.call_tool(
-                    "action.run",
+                    "action_run",
                     {
                         "doc_type": "file",
                         "doc_path": "large.svg",
@@ -148,7 +148,7 @@ class TestFileSizeLimitsViaMCP:
 
             with pytest.raises(Exception) as exc_info:
                 await client.call_tool(
-                    "action.run",
+                    "action_run",
                     {
                         "doc_type": "inline",
                         "doc_svg": large_svg,
@@ -167,7 +167,7 @@ class TestFileSizeLimitsViaMCP:
 
             with pytest.raises(Exception) as exc_info:
                 await client.call_tool(
-                    "dom.validate", {"doc_type": "inline", "doc_svg": large_svg}
+                    "dom_validate", {"doc_type": "inline", "doc_svg": large_svg}
                 )
             error_msg = str(exc_info.value).lower()
             assert any(word in error_msg for word in ["large", "size", "limit"])
@@ -184,7 +184,7 @@ class TestFileSizeLimitsViaMCP:
 
             # Should not raise an exception for DOM validation
             result = await client.call_tool(
-                "dom.validate", {"doc_type": "file", "doc_path": "small.svg"}
+                "dom_validate", {"doc_type": "file", "doc_path": "small.svg"}
             )
             assert result.data.get("ok") is True
 
@@ -209,7 +209,7 @@ class TestActionSafetyViaMCP:
             for action_list in safe_actions:
                 try:
                     result = await client.call_tool(
-                        "action.run",
+                        "action_run",
                         {
                             "doc_type": "inline",
                             "doc_svg": safe_svg,
@@ -243,7 +243,7 @@ class TestActionSafetyViaMCP:
             for action_list in unsafe_actions:
                 with pytest.raises(Exception) as exc_info:
                     await client.call_tool(
-                        "action.run",
+                        "action_run",
                         {
                             "doc_type": "inline",
                             "doc_svg": safe_svg,
@@ -282,7 +282,7 @@ class TestSelectorSafetyViaMCP:
 
             for selector_value in safe_selectors:
                 result = await client.call_tool(
-                    "dom.set",
+                    "dom_set",
                     {
                         "doc_type": "inline",
                         "doc_svg": test_svg,
@@ -319,7 +319,7 @@ class TestSelectorSafetyViaMCP:
             for selector_value in unsafe_selectors:
                 with pytest.raises(Exception) as exc_info:
                     await client.call_tool(
-                        "dom.set",
+                        "dom_set",
                         {
                             "doc_type": "inline",
                             "doc_svg": test_svg,
@@ -347,7 +347,7 @@ class TestInputValidationViaMCP:
             # Missing file path for file type
             with pytest.raises(Exception) as exc_info:
                 await client.call_tool(
-                    "action.run",
+                    "action_run",
                     {"doc_type": "file", "doc_path": None, "actions": ["select-all"]},
                 )
             # Should be caught by validation
@@ -356,7 +356,7 @@ class TestInputValidationViaMCP:
             # Missing SVG for inline type
             with pytest.raises(Exception) as exc_info:
                 await client.call_tool(
-                    "action.run",
+                    "action_run",
                     {"doc_type": "inline", "doc_svg": None, "actions": ["select-all"]},
                 )
             # Should be caught by validation
@@ -369,7 +369,7 @@ class TestInputValidationViaMCP:
             # Missing file path for file type
             with pytest.raises(Exception) as exc_info:
                 await client.call_tool(
-                    "dom.validate", {"doc_type": "file", "doc_path": None}
+                    "dom_validate", {"doc_type": "file", "doc_path": None}
                 )
             # Should be caught by validation
             assert exc_info.value is not None
@@ -377,7 +377,7 @@ class TestInputValidationViaMCP:
             # Missing SVG for inline type
             with pytest.raises(Exception) as exc_info:
                 await client.call_tool(
-                    "dom.validate", {"doc_type": "inline", "doc_svg": None}
+                    "dom_validate", {"doc_type": "inline", "doc_svg": None}
                 )
             # Should be caught by validation
             assert exc_info.value is not None
@@ -388,7 +388,7 @@ class TestInputValidationViaMCP:
         async with Client(app) as client:
             with pytest.raises(Exception) as exc_info:
                 await client.call_tool(
-                    "dom.validate",
+                    "dom_validate",
                     {"doc_type": "file", "doc_path": "doesnt_exist.svg"},
                 )
             error_msg = str(exc_info.value).lower()
@@ -403,7 +403,7 @@ class TestInputValidationViaMCP:
 
             # Should not raise exception - inkex handles malformed SVG gracefully
             result = await client.call_tool(
-                "dom.validate", {"doc_type": "inline", "doc_svg": malformed_svg}
+                "dom_validate", {"doc_type": "inline", "doc_svg": malformed_svg}
             )
             # Should return success even for malformed SVG (inkex is forgiving)
             assert result.data.get("ok") is True
@@ -421,7 +421,7 @@ class TestConfigurationSafetyViaMCP:
 
             # Basic smoke test that operations work within limits
             result = await client.call_tool(
-                "dom.validate",
+                "dom_validate",
                 {"doc_type": "inline", "doc_svg": "<svg><circle/></svg>"},
             )
             assert result.data.get("ok") is True
@@ -433,7 +433,7 @@ class TestConfigurationSafetyViaMCP:
             # Test with custom timeout (5s in test_config)
             try:
                 result = await client.call_tool(
-                    "action.run",
+                    "action_run",
                     {
                         "doc_type": "inline",
                         "doc_svg": "<svg><circle/></svg>",
@@ -464,7 +464,7 @@ class TestCrossToolSecurityConsistency:
             # CLI rejection
             with pytest.raises(Exception) as cli_exc:
                 await client.call_tool(
-                    "action.run",
+                    "action_run",
                     {
                         "doc_type": "file",
                         "doc_path": dangerous_path,
@@ -475,7 +475,7 @@ class TestCrossToolSecurityConsistency:
             # DOM rejection
             with pytest.raises(Exception) as dom_exc:
                 await client.call_tool(
-                    "dom.validate", {"doc_type": "file", "doc_path": dangerous_path}
+                    "dom_validate", {"doc_type": "file", "doc_path": dangerous_path}
                 )
 
             # Both should have similar error characteristics
@@ -497,7 +497,7 @@ class TestCrossToolSecurityConsistency:
             # CLI rejection
             with pytest.raises(Exception) as cli_exc:
                 await client.call_tool(
-                    "action.run",
+                    "action_run",
                     {
                         "doc_type": "inline",
                         "doc_svg": large_svg,
@@ -508,7 +508,7 @@ class TestCrossToolSecurityConsistency:
             # DOM rejection
             with pytest.raises(Exception) as dom_exc:
                 await client.call_tool(
-                    "dom.validate", {"doc_type": "inline", "doc_svg": large_svg}
+                    "dom_validate", {"doc_type": "inline", "doc_svg": large_svg}
                 )
 
             # Both should have similar size-related error messages

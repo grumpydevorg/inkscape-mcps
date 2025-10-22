@@ -179,7 +179,7 @@ async def _dom_validate_impl(doc: Doc) -> dict:
             raise ValidationError("ParseError") from e
 
 
-@tool("dom.validate")
+@tool("dom_validate")
 async def dom_validate(ctx: Context, doc: Doc) -> dict:
     """Validate SVG document structure."""
     return await _dom_validate_impl(doc)
@@ -288,7 +288,7 @@ async def _dom_set_impl(doc: Doc, ops: list[SetOp], save_as: str) -> dict:
             raise ToolError("DOM mutation failed") from e
 
 
-@tool("dom.set")
+@tool("dom_set")
 async def dom_set(ctx: Context, doc: Doc, ops: list[SetOp], save_as: str) -> dict:
     """Set attributes/styles on DOM elements."""
     return await _dom_set_impl(doc, ops, save_as)
@@ -309,7 +309,7 @@ async def _dom_clean_impl(doc: Doc, save_as: str) -> dict:
         return {"ok": True, "out": str(out_path)}
 
 
-@tool("dom.clean")
+@tool("dom_clean")
 async def dom_clean(ctx: Context, doc: Doc, save_as: str) -> dict:
     """Clean SVG using scour optimizer."""
     return await _dom_clean_impl(doc, save_as)
