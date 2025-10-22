@@ -2,10 +2,12 @@
 
 import os
 import platform
+import shutil
 import signal
 import subprocess
 import uuid
 from collections.abc import Callable
+from functools import lru_cache
 from pathlib import Path
 from typing import Any, Literal, TypeVar, cast
 
@@ -40,8 +42,7 @@ def _ensure_in_workspace(p: Path) -> Path:
     if CFG is None:
         raise ToolError("Config not initialized")
 
-    # Resolve both paths to handle symlinks consistently
-    # (e.g., /var -> /private/var on macOS)
+    # Resolve both paths to handle symlinks and platform-specific prefixes
     workspace_resolved = CFG.workspace.resolve()
     p_resolved = (CFG.workspace / p).resolve() if not p.is_absolute() else p.resolve()
 
@@ -105,6 +106,33 @@ def _is_safe_action(a: str) -> bool:
     """Check if action is in the safe allowlist."""
     aid = a.split(":", 1)[0]
     return aid in SAFE_ACTIONS
+
+
+@lru_cache(maxsize=1)
+def _resolve_inkscape_executable() -> str:
+    """Locate the Inkscape executable with Windows compatibility in mind."""
+    override = os.getenv("INKS_INKSCAPE_BIN")
+    if override:
+        override_path = Path(override).expanduser()
+        if override_path.is_file():
+            return str(override_path.resolve())
+        resolved_override = shutil.which(override)
+        if resolved_override:
+            return resolved_override
+        raise ToolError(
+            "Inkscape executable not found at the path provided via INKS_INKSCAPE_BIN. "
+            "Update the environment variable to point to the Inkscape binary."
+        )
+
+    for candidate in ("inkscape", "inkscape.exe"):
+        resolved = shutil.which(candidate)
+        if resolved:
+            return resolved
+
+    raise ToolError(
+        "Inkscape executable not found. Install Inkscape and ensure it is on your PATH, "
+        "or set INKS_INKSCAPE_BIN to its full path."
+    )
 
 
 class Doc(BaseModel):
@@ -175,7 +203,13 @@ def _mk_cmd(infile: Path, args: RunArgs, tmp_export: Path | None) -> list[str]:
         acts.append("export-do")
 
     # Let Inkscape close naturally - file-close causes crashes in batch mode
-    return ["inkscape", str(infile), f"--actions={';'.join(acts)}", "--batch-process"]
+    inkscape_exe = _resolve_inkscape_executable()
+    return [
+        inkscape_exe,
+        str(infile),
+        f"--actions={';'.join(acts)}",
+        "--batch-process",
+    ]
 
 
 async def _action_list_impl() -> dict:
@@ -188,7 +222,8 @@ async def _action_list_impl() -> dict:
             env = os.environ.copy()
             env["DISPLAY"] = ""  # Force headless mode to prevent GUI issues
             with anyio.fail_after(5):
-                p = await anyio.run_process(["inkscape", "--action-list"], env=env)
+                inkscape_exe = _resolve_inkscape_executable()
+                p = await anyio.run_process([inkscape_exe, "--action-list"], env=env)
             if p.returncode != 0:
                 raise ToolError("action-list failed")
 
@@ -270,7 +305,8 @@ async def _action_run_impl(
 
         try:
             if lock_path:
-                with FileLock(str(lock_path) + ".lock"):
+                lock_file = lock_path.parent / f"{lock_path.name}.lock"
+                with FileLock(str(lock_file)):
                     proc = subprocess.Popen(
                         cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, **popen_kw
                     )

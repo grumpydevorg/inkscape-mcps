@@ -273,6 +273,11 @@ chmod 755 ~/inkscape-workspace
 brew install inkscape  # macOS
 # or check if already installed
 which inkscape
+# If Inkscape lives outside PATH, point INKS_INKSCAPE_BIN at the binary
+# macOS/Linux example:
+export INKS_INKSCAPE_BIN="/Applications/Inkscape.app/Contents/MacOS/inkscape"
+# Windows PowerShell example:
+$Env:INKS_INKSCAPE_BIN = "C:\Program Files\Inkscape\bin\inkscape.exe"
 ```
 
 ### Manual Server Testing

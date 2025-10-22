@@ -2,8 +2,9 @@
 
 import os
 import tempfile
-from pathlib import Path
+from pathlib import Path, PureWindowsPath
 
+from inkscape_mcp import cli_server, dom_server
 from inkscape_mcp.config import InkscapeConfig
 
 
@@ -55,3 +56,21 @@ def test_workspace_creation():
         assert workspace.exists()
         assert workspace.is_dir()
         assert config.workspace.samefile(workspace)
+
+
+def test_windows_style_paths_normalized(tmp_path):
+    """Ensure Windows-style relative paths resolve within the workspace."""
+    config = InkscapeConfig(workspace=tmp_path)
+    windows_paths = ["subdir\\file.svg", "foo\\bar\\baz.svg"]
+
+    for server in (cli_server, dom_server):
+        server._init_config(config)
+        try:
+            for path_str in windows_paths:
+                win_path = PureWindowsPath(path_str)
+                normalized = Path(*win_path.parts)
+                resolved = server._ensure_in_workspace(normalized)
+                expected = (tmp_path / Path(*win_path.parts)).resolve()
+                assert resolved == expected
+        finally:
+            server._init_config()

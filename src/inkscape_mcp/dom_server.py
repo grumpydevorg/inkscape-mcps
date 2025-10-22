@@ -56,8 +56,7 @@ def _ensure_in_workspace(p: Path) -> Path:
     if CFG is None:
         raise ToolError("Config not initialized")
 
-    # Resolve both paths to handle symlinks consistently
-    # (e.g., /var -> /private/var on macOS)
+    # Resolve both paths to handle symlinks and platform-specific prefixes
     workspace_resolved = CFG.workspace.resolve()
     p_resolved = (CFG.workspace / p).resolve() if not p.is_absolute() else p.resolve()
 

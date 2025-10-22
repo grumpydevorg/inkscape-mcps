@@ -11,8 +11,8 @@ class InkscapeConfig(BaseModel):
 
     workspace: Path = Field(
         default_factory=lambda: Path(
-            os.getenv("INKS_WORKSPACE", "./inkspace")
-        ).resolve()
+            os.getenv("INKS_WORKSPACE", "inkspace")
+        ).expanduser().resolve()
     )
     max_file_size: int = Field(
         default_factory=lambda: int(os.getenv("INKS_MAX_FILE", str(50 * 1024 * 1024)))
@@ -32,7 +32,9 @@ class InkscapeConfig(BaseModel):
     def from_env(cls, prefix: str = "INKS_") -> "InkscapeConfig":
         """Create config from environment variables with given prefix."""
         return cls(
-            workspace=Path(os.getenv(f"{prefix}WORKSPACE", "./inkspace")).resolve(),
+            workspace=Path(os.getenv(f"{prefix}WORKSPACE", "inkspace"))
+            .expanduser()
+            .resolve(),
             max_file_size=int(os.getenv(f"{prefix}MAX_FILE", str(50 * 1024 * 1024))),
             timeout_default=int(os.getenv(f"{prefix}TIMEOUT", "60")),
             max_concurrent=int(os.getenv(f"{prefix}MAX_CONC", "4")),
