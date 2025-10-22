@@ -243,6 +243,116 @@ async def action_list(ctx: Context) -> dict:
     return await _action_list_impl()
 
 
+def _resolve_input(doc: Doc) -> tuple[Path, bool]:
+    """Resolve input file and return (path, is_temporary)."""
+    if doc.type == "file":
+        if not doc.path:
+            raise ValidationError("Missing file path")
+        infile = _ensure_in_workspace(Path(doc.path))
+        _check_size(infile)
+        return infile, False
+    else:
+        if doc.svg is None:
+            raise ValidationError("Missing inline SVG")
+        infile = _write_inline(doc.svg)
+        return infile, True
+
+
+def _prepare_export(export: Export | None) -> tuple[Path | None, Path | None]:
+    """Prepare export paths and return (tmp_export, final_export)."""
+    if not export:
+        return None, None
+
+    final_export = _ensure_in_workspace(Path(export.out))
+    # Preserve the export type extension for Inkscape compatibility
+    tmp_name = final_export.stem + f".tmp-{uuid.uuid4().hex}" + final_export.suffix
+    tmp_export = final_export.parent / tmp_name
+    return tmp_export, final_export
+
+
+def _handle_timeout(proc: subprocess.Popen) -> None:
+    """Handle subprocess timeout with platform-specific termination."""
+    if platform.system() != "Windows":
+        os.killpg(proc.pid, signal.SIGTERM)
+    else:
+        proc.terminate()
+    try:
+        proc.communicate(timeout=5)
+    except subprocess.TimeoutExpired:
+        proc.kill()
+        proc.communicate()
+
+
+def _run_inkscape(
+    cmd: list[str], timeout: int, lock_path: Path | None
+) -> tuple[bytes, bytes]:
+    """Execute Inkscape command with locking and timeout handling."""
+    env = os.environ.copy()
+    env["DISPLAY"] = ""  # Force headless mode to prevent GUI issues
+
+    if platform.system() != "Windows":
+        popen_kw = {"preexec_fn": os.setsid, "env": env}
+    else:
+        popen_kw = {
+            "creationflags": 0x00000010,
+            "env": env,
+        }  # CREATE_NEW_PROCESS_GROUP
+
+    if lock_path:
+        lock_file = lock_path.parent / f"{lock_path.name}.lock"
+        with FileLock(str(lock_file)):
+            return _execute_subprocess(cmd, timeout, popen_kw)
+    else:
+        return _execute_subprocess(cmd, timeout, popen_kw)
+
+
+def _execute_subprocess(
+    cmd: list[str], timeout: int, popen_kw: dict
+) -> tuple[bytes, bytes]:
+    """Execute subprocess with timeout handling."""
+    proc = subprocess.Popen(
+        cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, **popen_kw
+    )
+    try:
+        stdout, stderr = proc.communicate(timeout=timeout)
+    except subprocess.TimeoutExpired:
+        _handle_timeout(proc)
+        raise ToolError("Operation timed out") from None
+
+    if proc.returncode != 0:
+        raise ToolError("inkscape failed")
+
+    return stdout, stderr
+
+
+def _finalize_export(tmp_export: Path | None, final_export: Path | None) -> None:
+    """Move temporary export to final destination atomically."""
+    if not tmp_export or not final_export:
+        return
+
+    tmp_export = Path(tmp_export)
+    if not tmp_export.exists():
+        raise ToolError("export missing")
+    final_export.parent.mkdir(parents=True, exist_ok=True)
+    os.replace(tmp_export, final_export)
+
+
+def _cleanup(infile: Path, is_inline: bool, tmp_export: Path | None) -> None:
+    """Clean up temporary files."""
+    # Cleanup tmp inline
+    if is_inline:
+        try:
+            infile.unlink(missing_ok=True)
+        except Exception:
+            pass
+    # Cleanup tmp export if still present
+    if tmp_export:
+        try:
+            Path(tmp_export).unlink(missing_ok=True)
+        except Exception:
+            pass
+
+
 async def _action_run_impl(
     doc: Doc,
     actions: list[str] | None = None,
@@ -264,109 +374,29 @@ async def _action_run_impl(
     timeout = args.timeout_s or CFG.timeout_default
 
     async with SEM:
-        # Resolve input
-        if args.doc.type == "file":
-            if not args.doc.path:
-                raise ValidationError("Missing file path")
-            infile = _ensure_in_workspace(Path(args.doc.path))
-            _check_size(infile)
-        else:
-            if args.doc.svg is None:
-                raise ValidationError("Missing inline SVG")
-            infile = _write_inline(args.doc.svg)
+        # 1. Resolve input file
+        infile, is_inline = _resolve_input(args.doc)
 
-        # Prepare export temp
-        tmp_export = None
-        final_export = None
-        if args.export:
-            final_export = _ensure_in_workspace(Path(args.export.out))
-            # Preserve the export type extension for Inkscape compatibility
-            tmp_name = (
-                final_export.stem + f".tmp-{uuid.uuid4().hex}" + final_export.suffix
-            )
-            tmp_export = final_export.parent / tmp_name
+        # 2. Prepare export paths
+        tmp_export, final_export = _prepare_export(args.export)
 
-        # Per-file lock only for real files
+        # 3. Build command
         lock_path = infile if args.doc.type == "file" else None
-
         cmd = _mk_cmd(infile, args, tmp_export)
 
-        # Robust subprocess with cleanup
-        env = os.environ.copy()
-        env["DISPLAY"] = ""  # Force headless mode to prevent GUI issues
-
-        if platform.system() != "Windows":
-            popen_kw = {"preexec_fn": os.setsid, "env": env}
-        else:
-            popen_kw = {
-                "creationflags": 0x00000010,
-                "env": env,
-            }  # CREATE_NEW_PROCESS_GROUP
-
         try:
-            if lock_path:
-                lock_file = lock_path.parent / f"{lock_path.name}.lock"
-                with FileLock(str(lock_file)):
-                    proc = subprocess.Popen(
-                        cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, **popen_kw
-                    )
-                    try:
-                        stdout, stderr = proc.communicate(timeout=timeout)
-                    except subprocess.TimeoutExpired:
-                        if platform.system() != "Windows":
-                            os.killpg(proc.pid, signal.SIGTERM)
-                        else:
-                            proc.terminate()
-                        try:
-                            stdout, stderr = proc.communicate(timeout=5)
-                        except subprocess.TimeoutExpired:
-                            proc.kill()
-                            stdout, stderr = proc.communicate()
-                        raise ToolError("Operation timed out") from None
-            else:
-                proc = subprocess.Popen(
-                    cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, **popen_kw
-                )
-                try:
-                    stdout, stderr = proc.communicate(timeout=timeout)
-                except subprocess.TimeoutExpired:
-                    if platform.system() != "Windows":
-                        os.killpg(proc.pid, signal.SIGTERM)
-                    else:
-                        proc.terminate()
-                    try:
-                        stdout, stderr = proc.communicate(timeout=5)
-                    except subprocess.TimeoutExpired:
-                        proc.kill()
-                        stdout, stderr = proc.communicate()
-                    raise ToolError("Operation timed out") from None
+            # 4. Execute Inkscape
+            _run_inkscape(cmd, timeout, lock_path)
 
-            if proc.returncode != 0:
-                raise ToolError("inkscape failed")
+            # 5. Finalize export
+            _finalize_export(tmp_export, final_export)
 
-            # Atomic move of export
-            if tmp_export and final_export:
-                tmp_export = Path(tmp_export)
-                if not tmp_export.exists():
-                    raise ToolError("export missing")
-                final_export.parent.mkdir(parents=True, exist_ok=True)
-                os.replace(tmp_export, final_export)
-
+            # 6. Return result
             return {"ok": True, "out": str(final_export) if final_export else None}
 
         finally:
-            # Cleanup tmp inline
-            if args.doc.type == "inline":
-                try:
-                    infile.unlink(missing_ok=True)
-                except Exception:
-                    pass
-            # Cleanup tmp export if still present
-            if tmp_export:
-                try:
-                    Path(tmp_export).unlink(missing_ok=True)
-                except Exception:
-                    pass
+            # 7. Cleanup
+            _cleanup(infile, is_inline, tmp_export)
 
 
 @tool("action_run")
