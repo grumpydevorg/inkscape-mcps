@@ -64,6 +64,8 @@ export INKS_WORKSPACE="./my-workspace"  # Default: ./inkspace
 export INKS_MAX_FILE="104857600"        # Default: 50MB
 export INKS_TIMEOUT="120"               # Default: 60s
 export INKS_MAX_CONC="8"                # Default: 4
+# When inkspace is not in PATH, which is often the case in Windows, set it manually
+export INKS_INKSCAPE_BIN="C:\\Program Files\\Inkscape\\bin\\inkscape.exe"
 ```
 
 ### MCP Client Integration
